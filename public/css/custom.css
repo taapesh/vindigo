@@ -1,0 +1,175 @@
+body {
+    font-family: "Lato", sans-serif;
+}
+
+input[type=text] {
+    height: 45px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    padding-left: 10px;
+}
+
+input[type=text]:focus {
+    border: 1px solid #1997C6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+h4 {
+    margin: 5px;
+    font-size: 15px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* Map Style */
+#map {
+    border-left: 1px solid #d9d9d9;
+    height: 100vh;
+    width: 75%;
+}
+
+/* General Styles */
+.main-container {
+    padding-top: 60px;
+}
+
+.main-btn {
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+    height: 45px;
+    width: 135px;
+    border: 1px solid #ccc;
+    border-radius: 0;
+}
+
+.main-btn:focus {
+    color: #000;
+    background: #fff;
+    outline: 0;
+}
+
+.main-btn:hover {
+    background: #eeeeee;
+}
+
+/* Devices Styles */
+.devices-container {
+    padding-top: 50px;
+    padding-bottom: 60px;
+}
+
+.device-box {
+    float: left;
+    width: 31%;
+    padding: 30px;
+    padding-top: 35px;
+    padding-bottom: 50px;
+    border: 1px solid #ccc;
+    margin: 1%;
+}
+
+.device-stats {
+    padding-top: 15px;
+    padding-bottom: 50px;
+}
+
+.reset-device-btn {
+
+}
+
+.delete-device-btn {
+
+}
+
+.create-device-form {
+    margin-left: 10px;
+}
+
+/* Navbar Style */
+.main-navbar {
+    height: 70px;
+    background: #f6f6f6;
+    border-style: solid;
+    border-color: #ccc;
+    border-width: 0 0 1px 0;
+}
+
+.vindigo-nav-logo {
+    font-size: 24px;
+    text-transform: uppercase;
+    color: #333;
+    line-height: 70px;
+    float: left;
+    margin-right: 10px;
+}
+
+.nav-links {
+    line-height: 70px;
+}
+
+.nav-left {
+    float: left;
+    margin-left: 18px;
+}
+
+.nav-links a {
+    text-transform: uppercase;
+    color: #333;
+    font-size: 14px;
+    margin-right: 18px;
+}
+
+/* Side Panel Style */
+.side-panel {
+    float: left;
+    width: 25%;
+    border-right: 1px solid #d9d9d9;
+    height: 100vh;
+}
+
+.side-panel input {
+    display: block;
+    width: 100%;
+}
+
+.panel-header {
+    height: 70px;
+    background: #f6f6f6;
+    border-bottom: 1px solid #ccc;
+}
+
+.panel-header h1 {
+    line-height: 70px;
+    font-size: 24px;
+    text-transform: uppercase;
+    color: #333;
+    text-align: center;
+}
+
+.trip-form-container {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.trip-form-container button {
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.trip-form-container input {
+    margin-bottom: 20px;
+}
+
