@@ -16,7 +16,7 @@ module.exports = function(app) {
     // Create a new device
     app.post('/api/devices', function(req, res) {
         var name = req.body.name;
-        if (name == null) {
+        if (!name) {
             name = 'New Device'
         }
 
@@ -50,13 +50,16 @@ module.exports = function(app) {
 
     // Reset a device
     app.post('/api/devices/:device_id/reset', function(req, res) {
-        Device.findOneAndUpdate({_id: req.params.device_id}, {$set: {
-            duration: 0,
-            distance: 0,
-            address: '2203 Commerce St. Dallas, TX',
-            lat: 32.7819473,
-            lng: -96.7907082}}, {new: true},
-
+        Device.findOneAndUpdate(
+            { _id: req.params.device_id },
+            { $set: {
+                duration: 0,
+                distance: 0,
+                address: '2203 Commerce St. Dallas, TX',
+                lat: 32.7819473,
+                lng: -96.7907082
+            }},
+            { new: true },
             function(err, device) {
                 if (err) {
                     res.send(err);
@@ -66,12 +69,22 @@ module.exports = function(app) {
     });
 
 
-    // Modify device stats
+    // Save a trip under a device
     app.post('/api/devices/:device_id/log_trip', function(req, res) {
-
+        Device.findOneAndUpdate({ _id: req.params.device_id },
+            {
+                $set: {lat: req.body.endLat, lng: req.body.endLng},
+                $inc: {distance: req.body.distance, duration: req.body.duration}
+            },
+            function(err, device) {
+                if (err) {
+                    res.send(err);
+                }
+                res.json(device);
+            });
     });
 
-    // Drive page
+    // Test drive page
     app.get('/drive', function(req, res) {
         res.sendFile(path.join(__dirname, '../public/views', 'drive.html'));
     })

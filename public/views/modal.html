@@ -1,0 +1,16 @@
+<div type="text/ng-template" class="geofence-modal">
+    <h1>Create Geofence</h1>
+
+    <hr>
+
+    <input type="text" placeholder="Center address" ng-model="formData.center"></input>
+    <input type="text" placeholder="Radius in meters" ng-model="formData.radius"></input>
+    <input type="text" placeholder="Entering message" ng-model="formData.enterMsg"></input>
+    <input type="text" placeholder="Exiting message" ng-model="formData.exitMsg"></input>
+    
+    <div class="geofence-btn-group">
+        <button class="main-btn" type="button" ng-click="cancel()">Cancel</button>
+        <button class="main-btn" type="button" ng-click="ok()">Create</button>
+    </div>
+    <div class="clearfix"></div>
+</div>

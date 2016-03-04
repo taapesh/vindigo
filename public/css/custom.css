@@ -1,5 +1,5 @@
 body {
-    font-family: "Lato", sans-serif;
+    font-family: "Source Sans Pro", sans-serif;
 }
 
 input[type=text] {
@@ -17,6 +17,15 @@ input[type=text]:focus {
     border: 1px solid #1997C6;
 }
 
+select {
+    width: 100%;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    height: 40px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
 h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
@@ -30,6 +39,10 @@ a:hover {
     text-decoration: none;
 }
 
+a:focus {
+    text-decoration: none !important;
+}
+
 /* Map Style */
 #map {
     border-left: 1px solid #d9d9d9;
@@ -38,6 +51,12 @@ a:hover {
 }
 
 /* General Styles */
+.logo {
+    letter-spacing: 2px;
+    color: #333;
+    text-transform: uppercase !important;
+}
+
 .main-container {
     padding-top: 60px;
 }
@@ -64,7 +83,7 @@ a:hover {
 
 /* Devices Styles */
 .devices-container {
-    padding-top: 50px;
+    padding-top: 40px;
     padding-bottom: 60px;
 }
 
@@ -106,8 +125,6 @@ a:hover {
 
 .vindigo-nav-logo {
     font-size: 24px;
-    text-transform: uppercase;
-    color: #333;
     line-height: 70px;
     float: left;
     margin-right: 10px;
@@ -151,8 +168,6 @@ a:hover {
 .panel-header h1 {
     line-height: 70px;
     font-size: 24px;
-    text-transform: uppercase;
-    color: #333;
     text-align: center;
 }
 
@@ -166,10 +181,73 @@ a:hover {
 .trip-form-container button {
     width: 100%;
     text-transform: uppercase;
-    font-size: 13px;
+    font-size: 14px;
+    margin-bottom: 20px;
 }
 
 .trip-form-container input {
     margin-bottom: 20px;
 }
 
+.geofence-modal {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.geofence-modal h1 {
+    color: #5B5B5B;
+    font-weight: 400;
+    font-size: 22px;
+    margin-bottom: 25px;
+}
+
+.geofence-modal button {
+    margin-left: 15px;
+}
+
+.geofence-modal input {
+    width: 100%;
+    margin-bottom: 20px;
+    height: 50px;
+    font-size: 16px;
+}
+
+.geofence-btn-group {
+    float: right;
+    margin-top: 15px;
+}
+
+.trip-events {
+    margin-top: 15px;
+}
+
+.event-card {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 1px;
+}
+.event-card h1 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.trip-stats {
+    margin-top: 20px;
+}
+
+.trip-stats h1 {
+    font-size: 14px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.trip-stats h2 {
+    text-align: center;
+    margin-bottom: 10px
+}

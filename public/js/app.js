@@ -1,5 +1,5 @@
 // Declares the initial angular module and grabs other controllers and services.
-var app = angular.module('vindigo', ['ngRoute', 'deviceCtrl', 'driveCtrl', 'vindigoMap']);
+var app = angular.module('vindigo', ['ngRoute', 'deviceCtrl', 'driveCtrl', 'mapService', 'modalCtrl']);
 
 // Clear input field and unfocus it on enter pressed
 app.directive('resetOnEnter', function() {

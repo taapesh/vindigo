@@ -4,7 +4,6 @@ deviceCtrl.controller('deviceCtrl', ['$scope', '$http', function($scope, $http) 
     $http.get('./api/devices')
         .success(function(data) {
             $scope.devices = data;
-            console.log(data);
         })
         .error(function(data) {
             console.log('error: ' + data);
