@@ -17,7 +17,7 @@
 
 <body>
     <div ng-controller="driveCtrl">
-        <div class="side-panel">
+        <div id="sidePanel" class="side-panel">
             <div class="panel-header">
                 <a href="/"><h1 class="logo">Vindigo</h1></a>
             </div>
@@ -37,11 +37,18 @@
                 </div>
             </div>
             <div class="trip-stats" ng-show="tripStarted">
-                <h1>Distance</h1>
-                <h2>{{ tripDistance }} m</h2>
-                <h1>Duration</h1>
-                <h2>{{ tripDuration }} s</h2>
+                <div class="trip-distance">
+                    <h1>Distance</h1>
+                    <h2>{{ tripDistance }} m</h2>
+                </div>
+                <div class="trip-duration">
+                    <h1>Duration</h1>
+                    <h2>{{ tripDuration }} s</h2>
+                </div>
             </div>
+
+            <div class="clearfix"></div>
+
             <div class="trip-events">
                 <div ng-repeat="event in tripEvents">
                     <div class="event-card">
@@ -52,7 +59,7 @@
             </div>
         </div>
 
-        <div id="map"></div>
+        <div id="map" keep-in-view></div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -66,4 +73,18 @@
     <script src="js/deviceCtrl.js"></script>
     <script src="js/driveCtrl.js"></script>
     <script src="js/modalCtrl.js"></script>
+    <script src="js/deviceDetailCtrl.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        var side = $('#sidePanel');
+        // If we have enough room to display the entire panel after resizing
+        // window, then scroll to top of window.
+        $(window).resize(function() {
+            if (side.height() <= $(window).height()) {
+                $(window).scrollTop(0);
+            }
+        });
+    });
+    </script>
 </body>

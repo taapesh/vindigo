@@ -207,7 +207,7 @@ angular.module('mapService', [])
             trip.start();
             mapService.tripStarted = true;
             trackDistance();
-            distanceTracker = $interval(trackDistance, 300);
+            distanceTracker = $interval(trackDistance, 100);
 
             // Save trip if a device was chosen
             if (selectedDevice) {

@@ -17,7 +17,7 @@ module.exports = function(app) {
     app.post('/api/devices', function(req, res) {
         var name = req.body.name;
         if (!name) {
-            name = 'New Device'
+            name = 'New Device' // default device name
         }
 
         Device.create({
@@ -84,10 +84,30 @@ module.exports = function(app) {
             });
     });
 
+    // Get all of a device's trips
+    app.get('/api/devices/:device_id/trips', function(req, res) {
+
+    });
+
+    // Get details of a trip
+    app.get('/api/trips/:trip_id', function(req, res) {
+
+    });
+
+    // Device detail page
+    app.get('/devices/:device_id', function(req, res) {
+        res.sendFile(path.join(__dirname, '../public/views', 'device_detail.html'));
+    });
+
     // Test drive page
     app.get('/drive', function(req, res) {
         res.sendFile(path.join(__dirname, '../public/views', 'drive.html'));
-    })
+    });
+
+    // Devices page
+    app.get('/devices', function(req, res) {
+        res.sendFile(path.join(__dirname, '../public', 'index.html'));
+    });
 
     // Home page
     app.get('*', function(req, res) {

@@ -23,7 +23,7 @@ driveCtrl.controller('driveCtrl', ['$scope', '$http', 'mapService', '$interval',
         mapService.initiateTrip($scope.tripForm.start, $scope.tripForm.end, deviceId);
         track();
         tripTracker = $interval(track, 1000);
-        distanceTracker = $interval(trackDistance, 300);
+        distanceTracker = $interval(trackDistance, 100);
 
         $scope.tripEvents.push({
             title: 'Trip Started',
@@ -39,6 +39,7 @@ driveCtrl.controller('driveCtrl', ['$scope', '$http', 'mapService', '$interval',
         if (mapService.tripStarted && !mapService.isTripEnded()) {
             $scope.tripDuration += 1;
             var coords = mapService.getCurrentLocation();
+
             for (var i = 0; i < mapService.geofences.length; i++) {
                 var geo = mapService.geofences[i];
                 var distance = mapService.distanceBetween(geo.centerLat, geo.centerLng, coords.lat, coords.lng);
