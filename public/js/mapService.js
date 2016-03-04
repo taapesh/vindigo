@@ -218,6 +218,24 @@ angular.module('mapService', [])
         }
 
         function saveTrip() {
+            $http.post('./api/trips', {
+                distance: distance,
+                duration: duration,
+                start_address: null,
+                end_address: null,
+                start_lat: startLat,
+                start_lng: startLng,
+                end_lat: endLat,
+                end_lng: endLng,
+                device_id: selectedDevice,
+            })
+            .success(function(data) {
+                console.log('trip saved');
+            })
+            .error(function(data) {
+                console.log('error: ' + data);
+            });
+
             $http.post('./api/devices/' + selectedDevice + '/log_trip', {
                 distance: distance,
                 duration: duration,
@@ -225,7 +243,7 @@ angular.module('mapService', [])
                 endLng: endLng
             })
             .success(function(data) {
-                console.log('trip saved');
+                console.log('device updated');
             })
             .error(function(data) {
                 console.log('error: ' + data);;

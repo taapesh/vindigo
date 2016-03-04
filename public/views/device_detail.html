@@ -9,8 +9,15 @@
 </div>
 
 <h1>Device</h1>
-<h2>{{ device.name }}</h2>
-<h2>{{ device.id }}</h2>
-<h2>{{ device.distance }}</h2>
-<h2>{{ device.duration }}</h2>
-<h2>{{ device.lat }}, {{ device.lng }}</h2>
+<h3>{{ device.name }}</h3>
+<h3>{{ device.id }}</h3>
+<h3>{{ device.distance }}</h3>
+<h3>{{ device.duration }}</h3>
+<h3>{{ device.lat }}, {{ device.lng }}</h3>
+<hr>
+<h1>Trips</h1>
+<div ng-repeat="trip in trips">
+    <h3>{{ trip._id }}</h3>
+    <h3>{{ trip.distance }}</h3>
+    <h3>{{ trip.duration }}</h3>
+</div>

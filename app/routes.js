@@ -1,4 +1,5 @@
 var Device = require('./models/Device');
+var Trip = require('./models/Trip');
 var path = require('path');
 
 module.exports = function(app) {
@@ -108,11 +109,37 @@ module.exports = function(app) {
 
     // Get all of a device's trips
     app.get('/api/devices/:device_id/trips', function(req, res) {
+        Trip.find( {device_id: req.params.device_id}, function(err, trips) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).json(trips);
+        });
+    });
 
+    // Create a trip
+    app.post('/api/trips', function(req, res) {
+        Trip.create({
+            distance: req.body.distance,
+            duration: req.body.duration,
+            start_lat: req.body.start_lat,
+            start_lng: req.body.start_lng,
+            end_lat: req.body.end_lat,
+            end_lng: req.body.end_lng,
+            start_address: req.body.start_address,
+            end_address: req.body.end_address,
+            device_id: req.body.device_id
+        }, function(err, trip) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(201).json(trip);
+        });
     });
 
     // Get details of a trip
     app.get('/api/trips/:trip_id', function(req, res) {
 
     });
+
 };

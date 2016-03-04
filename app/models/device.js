@@ -7,5 +7,4 @@ module.exports = mongoose.model('Device', {
     lat: Number,
     lng: Number,
     address: String,
-    vehicle_id: String
 });
