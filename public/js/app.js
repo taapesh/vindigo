@@ -1,5 +1,5 @@
 // Declares the initial angular module and grabs other controllers and services.
-var app = angular.module('vindigo', ['ngRoute', 'deviceCtrl', 'driveCtrl', 'mapService', 'modalCtrl', 'deviceDetailCtrl']);
+var app = angular.module('vindigo', ['ngRoute', 'deviceCtrl', 'deviceDetailCtrl', 'driveCtrl', 'mapService', 'modalCtrl']);
 
 // Clear input field and unfocus it on enter pressed
 app.directive('resetOnEnter', function() {
@@ -31,21 +31,29 @@ app.directive('keepInView', function($window) {
     };
 });
 
-app.config(['$routeProvider', function($routeProvider) {
+app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+    $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+    });
+
     $routeProvider
+        .when('/', {
+            templateUrl: '/views/home.html'
+        })
         .when('/devices', {
-            templateUrl: 'views/devices.html',
+            templateUrl: '/views/devices.html',
             controller: 'deviceCtrl'
         })
         .when('/devices/:device_id', {
-            templateUrl: 'views/device_detail.html',
+            templateUrl: '/views/device_detail.html',
             controller: 'deviceDetailCtrl'
         })
         .when('/drive', {
-            templateUrl: 'views/drive.html',
+            templateUrl: '/views/drive.html',
             controller: 'driveCtrl'
         })
         .otherwise({
-            redirectTo: '/devices'
-        });
+            templateUrl: '/404.html'
+        });  
 }]);

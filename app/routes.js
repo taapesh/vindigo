@@ -13,6 +13,28 @@ module.exports = function(app) {
         });
     });
 
+    // Get device
+    app.get('/api/devices/:device_id', function(req, res) {
+        // Avoid object id cast error
+        if (!req.params.device_id.match(/^[0-9a-fA-F]{24}$/)) {
+            res.status(404).json({message: 'Device not found'});
+            return;
+        }
+
+        Device.findOne({_id: req.params.device_id}, function(err, device) {
+            if (err) {
+                res.send(err);
+                return;
+            }
+
+            if (!device) {
+                res.status(404).json({message: 'Device not found'});
+                return;
+            }
+            res.json(device);
+        });
+    });
+
     // Create a new device
     app.post('/api/devices', function(req, res) {
         var name = req.body.name;
@@ -32,7 +54,7 @@ module.exports = function(app) {
             if (err) {
                 res.send(err);
             }
-            res.json(device);
+            res.status(201).json(device);
         });
     });
 
@@ -44,7 +66,7 @@ module.exports = function(app) {
             if (err) {
                 res.send(err);
             }
-            res.json({'message': 'Deleted device'});
+            res.status(200).json({'message': 'Deleted device'});
         });
     });
 
@@ -92,25 +114,5 @@ module.exports = function(app) {
     // Get details of a trip
     app.get('/api/trips/:trip_id', function(req, res) {
 
-    });
-
-    // Device detail page
-    app.get('/devices/:device_id', function(req, res) {
-        res.sendFile(path.join(__dirname, '../public/views', 'device_detail.html'));
-    });
-
-    // Test drive page
-    app.get('/drive', function(req, res) {
-        res.sendFile(path.join(__dirname, '../public/views', 'drive.html'));
-    });
-
-    // Devices page
-    app.get('/devices', function(req, res) {
-        res.sendFile(path.join(__dirname, '../public', 'index.html'));
-    });
-
-    // Home page
-    app.get('*', function(req, res) {
-        res.sendFile('./public/index.html');
     });
 };

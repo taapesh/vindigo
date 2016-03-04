@@ -60,6 +60,7 @@ a:focus {
 
 .main-container {
     padding-top: 60px;
+    padding-bottom: 60px;
 }
 
 .main-btn {
@@ -92,27 +93,42 @@ a:focus {
     padding-bottom: 60px;
 }
 
+.devices-container a {
+    color: #333;
+}
+
+.devices-container a:hover {
+
+}
+
 .device-box {
     float: left;
     width: 31%;
     padding: 30px;
     padding-top: 35px;
-    padding-bottom: 50px;
+    padding-bottom: 20px;
     border: 1px solid #ccc;
     margin: 1%;
 }
 
 .device-stats {
     padding-top: 15px;
-    padding-bottom: 50px;
+    padding-bottom: 30px;
+}
+
+.view-detail-btn {
+    width: 100%;
+    margin-bottom: 30px;
 }
 
 .reset-device-btn {
-
+    width: 48%;
+    float: left;
 }
 
 .delete-device-btn {
-
+    width: 48%;
+    float: right;
 }
 
 .create-device-form {

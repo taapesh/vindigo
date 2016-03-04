@@ -1,0 +1,40 @@
+<div class="main-navbar">
+    <div class="container">
+        <a href="/"><div class="logo vindigo-nav-logo">Vindigo</div></a>
+        <div class="nav-links nav-left">
+            <a href="/devices">Devices</a>
+            <a href="/drive" target="_self">Drive</a>
+        </div>
+    </div>
+</div>
+
+<div class="container main-container">
+    <h1>Devices</h1>
+    <hr>
+    <div class="row">
+        <form class="create-device-form">
+            <input type="text" class="text-center" placeholder="Device name" ng-model="newDeviceForm.name" reset-on-enter>
+            <button type="submit" class="main-btn" ng-click="createDevice()">Create Device</button>
+        </form>
+    </div>
+
+    <div id="device-list" class="row">
+        <div class="devices-container">
+            <div ng-repeat="device in devices">
+                <div class="device-box">
+                    <h3 class="text-center">{{ device.name }}</h3>
+                    <h4 class="text-center">Device ID: {{ device._id }}</h4>
+                    <div class="device-stats">
+                        <h4><b>Location:</b> {{ device.address }}</h4>
+                        <h4><b>Coordinates:</b> {{ device.lat }}, {{ device.lng }}</h4>
+                        <h4><b>Distance Driven:</b> {{ device.distance }} meters</h4>
+                        <h4><b>Time Driven:</b> {{ device.duration }} seconds</h4>
+                    </div>
+                    <a ng-href="/devices/{{device._id}}"><button class="main-btn view-detail-btn">View Detail</button></a>
+                    <button class="main-btn reset-device-btn" ng-click="resetDevice(device._id, $index)">Reset Device</button>
+                    <button class="main-btn delete-device-btn" ng-click="deleteDevice(device._id, $index)">Delete Device</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

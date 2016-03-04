@@ -9,7 +9,7 @@ driveCtrl.controller('driveCtrl', ['$scope', '$http', 'mapService', '$interval',
     var tripTracker;
     var distanceTracker;
 
-     $http.get('./api/devices')
+     $http.get('/api/devices')
         .success(function(data) {
             $scope.devices = data;
         })

@@ -4,7 +4,6 @@ var cors        = require('cors');
 var mongoose    = require('mongoose');
 var morgan      = require('morgan');
 var bodyParser  = require('body-parser');
-var methodOverride = require('method-override');
 
 // Connect to db
 var database = require('./config/database');
@@ -16,10 +15,14 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended':'true'}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({type: 'application/vnd.api+json'}));
-app.use(methodOverride('X-HTTP-Method-Override'));
 
 // routes
 require('./app/routes')(app);
+
+app.all('/*', function(req, res, next) {
+    // Send index.html to support HTML5Mode
+    res.sendFile('index.html', { root: __dirname + '/public' });
+});
 
 // Start listening for requests
 app.listen(3000);

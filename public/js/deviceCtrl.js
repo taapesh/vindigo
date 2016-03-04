@@ -1,7 +1,7 @@
 var deviceCtrl = angular.module('deviceCtrl', []);
 
-deviceCtrl.controller('deviceCtrl', ['$scope', '$http', function($scope, $http) {
-    $http.get('./api/devices')
+deviceCtrl.controller('deviceCtrl', ['$scope', '$http', '$location', function($scope, $http, $location) {
+    $http.get('/api/devices')
         .success(function(data) {
             $scope.devices = data;
         })
@@ -10,7 +10,7 @@ deviceCtrl.controller('deviceCtrl', ['$scope', '$http', function($scope, $http) 
         });
 
     $scope.createDevice = function() {
-        $http.post('./api/devices', $scope.newDeviceForm)
+        $http.post('/api/devices', $scope.newDeviceForm)
             .success(function(data) {
                 $scope.devices.push(data);
                 console.log(data);
@@ -21,7 +21,7 @@ deviceCtrl.controller('deviceCtrl', ['$scope', '$http', function($scope, $http) 
     };
 
     $scope.deleteDevice = function(id, index) {
-        $http.delete('./api/devices/' + id)
+        $http.delete('/api/devices/' + id)
             .success(function(data) {
                 $scope.devices.splice(index, 1);
                 console.log(data);
@@ -32,7 +32,7 @@ deviceCtrl.controller('deviceCtrl', ['$scope', '$http', function($scope, $http) 
     };
 
     $scope.resetDevice = function(id, index) {
-        $http.post('./api/devices/' + id + '/reset')
+        $http.post('/api/devices/' + id + '/reset')
             .success(function(data) {
                 $scope.devices[index] = data;
                 //device = data;

@@ -1,9 +1,12 @@
 var deviceDetailCtrl = angular.module('deviceDetailCtrl', []);
 
 deviceDetailCtrl.controller('deviceDetailCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
-    if ($routeParams) {
-        console.log('there are params');
-    } else console.log('no params');
-    console.log($routeParams.length);
-    console.log('hello from device detail');
+    $http.get('/api/devices/' + $routeParams.device_id)
+        .success(function(data) {
+            $scope.device = data;
+        })
+        .error(function(data) {
+            console.log('error: ' + data);
+            // Handle device not found
+        });
 }]);

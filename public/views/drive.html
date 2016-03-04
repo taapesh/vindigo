@@ -1,90 +1,56 @@
-<!doctype html>
-<html ng-app="vindigo">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<div id="sidePanel" class="side-panel">
+    <div class="panel-header">
+        <a href="/"><h1 class="logo">Vindigo</h1></a>
+    </div>
+    <div class="trip-form-container" ng-show="!tripStarted">
+        <form>
+            <select ng-model="selectedDevice" ng-options="device.name for device in devices">
+                <option value="" disabled>Select a device</option>
+            </select>
+            <input type="text" placeholder="Start" ng-model="tripForm.start"></input>
+            <input type="text" placeholder="End" ng-model="tripForm.end"></input>
+            <button type="submit" class="main-btn" ng-click="startTrip()">Start Trip</button>
+        </form>
 
-    <title>Vindigo</title>
-
-    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,700' rel='stylesheet' type='text/css'>
-
-    <script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
-    <link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
-    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/custom.css">
-</head>
-
-<body>
-    <div ng-controller="driveCtrl">
-        <div id="sidePanel" class="side-panel">
-            <div class="panel-header">
-                <a href="/"><h1 class="logo">Vindigo</h1></a>
-            </div>
-            <div class="trip-form-container" ng-show="!tripStarted">
-                <form>
-                    <select ng-model="selectedDevice" ng-options="device.name for device in devices">
-                        <option value="" disabled>Select a device</option>
-                    </select>
-                    <input type="text" placeholder="Start" ng-model="tripForm.start"></input>
-                    <input type="text" placeholder="End" ng-model="tripForm.end"></input>
-                    <button type="submit" class="main-btn" ng-click="startTrip()">Start Trip</button>
-                </form>
-
-                <!-- Modal form -->
-                <div ng-controller="modalCtrl">
-                    <button class="main-btn" ng-click="open()">+ Create Geofence</button>
-                </div>
-            </div>
-            <div class="trip-stats" ng-show="tripStarted">
-                <div class="trip-distance">
-                    <h1>Distance</h1>
-                    <h2>{{ tripDistance }} m</h2>
-                </div>
-                <div class="trip-duration">
-                    <h1>Duration</h1>
-                    <h2>{{ tripDuration }} s</h2>
-                </div>
-            </div>
-
-            <div class="clearfix"></div>
-
-            <div class="trip-events">
-                <div ng-repeat="event in tripEvents">
-                    <div class="event-card">
-                        <h1>{{ event.title }}</h1>
-                        <p>{{ event.message }}</p>
-                    </div>
-                </div>
-            </div>
+        <!-- Modal form -->
+        <div ng-controller="modalCtrl">
+            <button class="main-btn" ng-click="open()">+ Create Geofence</button>
         </div>
-
-        <div id="map" keep-in-view></div>
+    </div>
+    <div class="trip-stats" ng-show="tripStarted">
+        <div class="trip-distance">
+            <h1>Distance</h1>
+            <h2>{{ tripDistance }} m</h2>
+        </div>
+        <div class="trip-duration">
+            <h1>Duration</h1>
+            <h2>{{ tripDuration }} s</h2>
+        </div>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.min.js"></script>
-    <script src="js/ui-bootstrap-tpls-1.2.1.min.js"></script>
-    <script src="js/MovingMarker.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/mapService.js"></script>
-    <script src="js/deviceCtrl.js"></script>
-    <script src="js/driveCtrl.js"></script>
-    <script src="js/modalCtrl.js"></script>
-    <script src="js/deviceDetailCtrl.js"></script>
+    <div class="clearfix"></div>
 
-    <script>
-    $(document).ready(function() {
-        var side = $('#sidePanel');
-        // If we have enough room to display the entire panel after resizing
-        // window, then scroll to top of window.
-        $(window).resize(function() {
-            if (side.height() <= $(window).height()) {
-                $(window).scrollTop(0);
-            }
-        });
+    <div class="trip-events">
+        <div ng-repeat="event in tripEvents">
+            <div class="event-card">
+                <h1>{{ event.title }}</h1>
+                <p>{{ event.message }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="map" keep-in-view></div>
+
+<script>
+$(document).ready(function() {
+    var side = $('#sidePanel');
+    // If we have enough room to display the entire panel after resizing
+    // window, then scroll to top of window.
+    $(window).resize(function() {
+        if (side.height() <= $(window).height()) {
+            $(window).scrollTop(0);
+        }
     });
-    </script>
-</body>
+});
+</script>
