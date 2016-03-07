@@ -9,5 +9,6 @@ module.exports = mongoose.model('Trip', {
     end_lng: Number,
     start_address: String,
     end_address: String,
-    device_id: String
+    device_id: String,
+    static_url: String
 });

@@ -14,9 +14,8 @@ module.exports = function(app) {
         });
     });
 
-    // Get device
+    // Get a device
     app.get('/api/devices/:device_id', function(req, res) {
-        // Avoid object id cast error
         if (!req.params.device_id.match(/^[0-9a-fA-F]{24}$/)) {
             res.status(404).json({message: 'Device not found'});
             return;
@@ -91,12 +90,11 @@ module.exports = function(app) {
             });
     });
 
-
-    // Save a trip under a device
+    // Update device stats
     app.post('/api/devices/:device_id/log_trip', function(req, res) {
         Device.findOneAndUpdate({ _id: req.params.device_id },
             {
-                $set: {lat: req.body.endLat, lng: req.body.endLng},
+                $set: {lat: req.body.end_lat, lng: req.body.end_lng},
                 $inc: {distance: req.body.distance, duration: req.body.duration}
             },
             function(err, device) {
@@ -128,7 +126,8 @@ module.exports = function(app) {
             end_lng: req.body.end_lng,
             start_address: req.body.start_address,
             end_address: req.body.end_address,
-            device_id: req.body.device_id
+            device_id: req.body.device_id,
+            static_url: req.body.static_url
         }, function(err, trip) {
             if (err) {
                 res.send(err);
@@ -137,9 +136,36 @@ module.exports = function(app) {
         });
     });
 
-    // Get details of a trip
+    // Get a trip
     app.get('/api/trips/:trip_id', function(req, res) {
+        if (!req.params.trip_id.match(/^[0-9a-fA-F]{24}$/)) {
+            res.status(404).json({message: 'Trip not found'});
+            return;
+        }
 
+        Trip.findOne({_id: req.params.trip_id}, function(err, trip) {
+            if (err) {
+                res.send(err);
+                return;
+            }
+
+            if (!trip) {
+                res.status(404).json({message: 'Trip not found'});
+                return;
+            }
+            res.json(trip);
+        });
     });
 
+    // Delete a trip
+    app.delete('/api/trips/:trip_id', function(req, res) {
+        Trip.remove({
+            _id: req.params.trip_id
+        }, function(err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).json({'message': 'Deleted trip'});
+        });
+    });
 };

@@ -1,5 +1,5 @@
 // Declares the initial angular module and grabs other controllers and services.
-var app = angular.module('vindigo', ['ngRoute', 'deviceCtrl', 'deviceDetailCtrl', 'driveCtrl', 'mapService', 'modalCtrl']);
+var app = angular.module('vindigo', ['ngRoute', 'deviceCtrl', 'deviceDetailCtrl', 'driveCtrl', 'tripDetailCtrl', 'mapService', 'modalCtrl']);
 
 // Clear input field and unfocus it on enter pressed
 app.directive('resetOnEnter', function() {
@@ -52,6 +52,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         .when('/drive', {
             templateUrl: '/views/drive.html',
             controller: 'driveCtrl'
+        })
+        .when('/trips/:trip_id', {
+            templateUrl: '/views/trip_detail.html',
+            controller: 'tripDetailCtrl'
         })
         .otherwise({
             templateUrl: '/404.html'

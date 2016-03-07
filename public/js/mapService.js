@@ -9,6 +9,11 @@ angular.module('mapService', [])
         const baseDirections = mapboxBase + 'v4/directions/mapbox.driving/';
         const requestTail = '.json?access_token=' + accessToken;
 
+        // Static map generation
+        const staticBase = 'https://api.mapbox.com/v4/mapbox.streets-basic/';
+        const startPin = 'pin-s-star+1F3A93';
+        const endPin = 'pin-s-embassy+1F3A93';
+
         const R = 6371000; // radius of earth in meters
         const DEFAULT_RADIUS = 50;
 
@@ -33,20 +38,39 @@ angular.module('mapService', [])
 
         // Map service that this factory returns, allowing controller to interact with the map
         var mapService = {};
+
+        // Geofences
         mapService.geofences = [];
+
+        // Has the trip started?
         mapService.tripStarted = false;
 
-        // Map object that controller will interact with
+        // Main map object
         var map = {};
+
+        // Moving marker that represents the car driving
         var trip = {};
+
+        // Start and end coordinates of the trip
         var startLat, startLng, endLat, endLng;
+
+        // Last known LatLng of the trip
         var lastLat, lastLng;
-        var distance;
-        var duration;
-        var tripCoordinates = {};
+
+        // Total distance and duration for the trip
+        var distance, duration;
+
+        // Distance traveled so far in the trip
         var distanceTraveled = 0;
+
+        // Interval to track distance
         var distanceTracker;
+
+        // Device ID, will save the trip if not null
         var selectedDevice;
+
+        // Coordinates obtained from the mapbox directions API
+        var directionsGeoJson = {};
         
         // Intialize mapbox map
         L.mapbox.accessToken = accessToken;
@@ -54,6 +78,11 @@ angular.module('mapService', [])
             .setView([32.78194730000001, -96.79070819999998], 17);
         map.doubleClickZoom.disable();
         map.scrollWheelZoom.disable();
+
+        // Mapbox layers
+        var markerLayer = L.mapbox.featureLayer().addTo(map);
+        var geofenceLayer = L.mapbox.featureLayer().addTo(map);
+        var directionsLayer = L.mapbox.featureLayer().addTo(map);
 
         mapService.initiateTrip = function(start, end, deviceId) {
             selectedDevice = deviceId;
@@ -90,8 +119,7 @@ angular.module('mapService', [])
                 var centerLat = center[1];
                 var centerLng = center[0];
 
-                var featureLayer = L.mapbox.featureLayer().addTo(map);
-                var geofenceCircle = L.circle([centerLat, centerLng], radius, circleOptions).addTo(featureLayer);
+                var geofenceCircle = L.circle([centerLat, centerLng], radius, circleOptions).addTo(geofenceLayer);
                 map.fitBounds(geofenceCircle.getBounds().pad(0.5));
 
                 mapService.geofences.push({
@@ -173,36 +201,34 @@ angular.module('mapService', [])
                 ]
             };
 
-            var featureLayer = L.mapbox.featureLayer().addTo(map);
-            featureLayer.setGeoJSON(markerGeoJson);
-            map.fitBounds(featureLayer.getBounds().pad(0.5));
+            markerLayer.setGeoJSON(markerGeoJson);
         }
 
         function getDirectionsAndDisplayRoute() {
             var directionsQuery = baseDirections + getLatLngString(startLng, startLat, endLng, endLat) + requestTail;
-
+            
             $.getJSON(directionsQuery, function(data) {
-                var geojson = data.routes[0].geometry;
-                L.geoJson(geojson, { style: lineStyle }).addTo(map);
+                directionsGeoJson = data.routes[0].geometry;
+
+                L.geoJson(directionsGeoJson, { style: lineStyle }).addTo(map);
 
                 distance = data.routes[0].distance;
                 duration = data.routes[0].duration;
-                tripCoordinates = geojson.coordinates;
 
-                // Reverse coordinates
-                var numCoords = tripCoordinates.length;
+                var numCoords = directionsGeoJson.coordinates.length;
                 for (var i = 0; i < numCoords; i++) {
-                    var tmp = tripCoordinates[i][0];
-                    tripCoordinates[i][0] = tripCoordinates[i][1];
-                    tripCoordinates[i][1] = tmp;
+                    var tmp = directionsGeoJson.coordinates[i][0];
+                    directionsGeoJson.coordinates[i][0] = directionsGeoJson.coordinates[i][1];
+                    directionsGeoJson.coordinates[i][1] = tmp;
                 }
-
+                var bounds = L.latLngBounds(directionsGeoJson.coordinates);
+                map.fitBounds(bounds.pad(0.1));
                 simulateDrive();
             });
         }
 
         function simulateDrive() {
-            trip = L.Marker.movingMarker(tripCoordinates,
+            trip = L.Marker.movingMarker(directionsGeoJson.coordinates,
                 duration*1000, {icon: carIcon}).addTo(map);
             trip.start();
             mapService.tripStarted = true;
@@ -217,8 +243,47 @@ angular.module('mapService', [])
             }
         }
 
+        function createStaticMapUrl() {
+            // Encode polyline using directions coordinates
+            var polylineString = encodeURIComponent(polyline.encode(directionsGeoJson.coordinates));
+
+            // Get bounds of map using driving route
+            var numCoords = directionsGeoJson.coordinates.length;
+            for (var i = 0; i < numCoords; i++) {
+                var tmp = directionsGeoJson.coordinates[i][0];
+                directionsGeoJson.coordinates[i][0] = directionsGeoJson.coordinates[i][1];
+                directionsGeoJson.coordinates[i][1] = tmp;
+            }
+            //var bounds = geojsonExtent(directionsGeoJson);
+            var _bounds = L.latLngBounds(directionsGeoJson.coordinates).pad(0.1);
+
+            var bounds = [
+                _bounds._southWest.lat,
+                _bounds._southWest.lng,
+                _bounds._northEast.lat,
+                _bounds._northEast.lng
+            ];
+
+            // The size of the desired map
+            var size = [135, 135];
+
+            // Calculate a zoom level and centerpoint for this map
+            var vp = geoViewport.viewport(bounds, size);
+
+            var url = staticBase;
+            url += startPin + '(' + startLng + ',' + startLat + '),';
+            url += endPin + '(' + endLng + ',' + endLat + '),';
+            url += 'path+1FBAD6(' + polylineString + ')/'
+            url += vp.center.join(',') + ',' + vp.zoom + '/' + size.join('x') + '@2x.png';
+            url += '?access_token=' + L.mapbox.accessToken;
+            console.log('static map url: ' + url);
+            return url;
+        }
+
         function saveTrip() {
-            $http.post('./api/trips', {
+            var url = createStaticMapUrl();
+
+            $http.post('/api/trips', {
                 distance: distance,
                 duration: duration,
                 start_address: null,
@@ -228,6 +293,7 @@ angular.module('mapService', [])
                 end_lat: endLat,
                 end_lng: endLng,
                 device_id: selectedDevice,
+                static_url: url
             })
             .success(function(data) {
                 console.log('trip saved');
@@ -236,11 +302,11 @@ angular.module('mapService', [])
                 console.log('error: ' + data);
             });
 
-            $http.post('./api/devices/' + selectedDevice + '/log_trip', {
+            $http.post('/api/devices/' + selectedDevice + '/log_trip', {
                 distance: distance,
                 duration: duration,
-                endLat: endLat,
-                endLng: endLng
+                end_lat: endLat,
+                end_lng: endLng
             })
             .success(function(data) {
                 console.log('device updated');

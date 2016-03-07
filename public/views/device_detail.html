@@ -8,16 +8,30 @@
     </div>
 </div>
 
-<h1>Device</h1>
-<h3>{{ device.name }}</h3>
-<h3>{{ device.id }}</h3>
-<h3>{{ device.distance }}</h3>
-<h3>{{ device.duration }}</h3>
-<h3>{{ device.lat }}, {{ device.lng }}</h3>
-<hr>
-<h1>Trips</h1>
-<div ng-repeat="trip in trips">
-    <h3>{{ trip._id }}</h3>
-    <h3>{{ trip.distance }}</h3>
-    <h3>{{ trip.duration }}</h3>
+<div class="container main-container">
+    <h1>Device</h1>
+    <hr>
+    <h3>{{ device.name }}</h3>
+    <h3>{{ device._id }}</h3>
+    <h3>{{ device.distance }}</h3>
+    <h3>{{ device.duration }}</h3>
+    <h3>{{ device.lat }}, {{ device.lng }}</h3>
+
+    <h1 style="margin-top: 40px">Trips</h1>
+    <h3 ng-show="trips.length === 0">No Trips on this Device</h3>
+    <hr>
+
+    <div ng-repeat="trip in trips">
+        <img ng-src="{{ trip.static_url }}" style="border: 1px solid #ccc; float: left">
+        <div style="float: left; margin-left: 35px; margin-top: 20px">
+            <h3>Trip ID: {{ trip._id }}</h3>
+            <h3>Distance: {{ trip.distance }} m</h3>
+            <h3>Duration: {{ trip.duration }} s</h3>
+            <h3>Start: {{ trip.start_lat }}, {{ trip.start_lng }}</h3>
+            <h3>End: {{ trip.end_lat }}, {{ trip.end_lng }}</h3>
+            <a ng-href="/trips/{{trip._id}}"><button class="main-btn" style="margin-top: 20px">View Detail</button></a>
+        </div>
+        <div class="clearfix"></div>
+        <hr>
+    </div>
 </div>
